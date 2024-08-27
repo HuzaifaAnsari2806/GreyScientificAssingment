@@ -144,14 +144,23 @@ def DepartmentDoctorsView(request,pk):
     serializer=DoctorGetSerializer(doctor)
     return Response({"data":serializer.data})
 
-@api_view()
+@api_view(['GET','PUT'])
 def DepartmentPatientsView(request,pk):
     try:
         patient = Patient.objects.filter(department=pk).first()
     except Patient.DoesNotExist:
         return Response({"error": "Department record not found."}, status=status.HTTP_404_NOT_FOUND)
-    serializer=PatientGetSerializer(patient)
-    return Response({"data":serializer.data})
+    if request.method=='GET':
+        serializer=PatientGetSerializer(patient)
+        return Response({"data":serializer.data})
+    elif request.method=='PUT':
+        data=request.data
+        serializer=PatientPostSerializer(patient,data=data,partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"data":serializer.data},status=status.HTTP_205_RESET_CONTENT)
+        else:
+            return Response({"errors":serializer.errors},status=status.HTTP_400_BAD_REQUEST)
 
 
 

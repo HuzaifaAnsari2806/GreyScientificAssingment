@@ -16,8 +16,17 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path,include
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+from oauth2_provider.views import TokenView
+
+from .views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('hospital/', include('hospital.urls')),
+    path('login/', login, name='login'),
+    path('callback/', callback, name='callback'),
+    path('logout/', logout, name='logout'),
+    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 ]
