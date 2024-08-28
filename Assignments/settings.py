@@ -30,7 +30,7 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['.railway.app']
+ALLOWED_HOSTS = ['huzaifa2806.pythonanywhere.com']
 
 
 # Application definition
@@ -94,8 +94,9 @@ DATABASES = {
     #     'ENGINE': 'django.db.backends.sqlite3',
     #     'NAME': BASE_DIR / 'db.sqlite3',
     # },
+    
     'default': dj_database_url.config(
-        default='postgres://localhost'
+         default=f"postgres://{os.getenv('DB_USER')}:{os.getenv('DB_PASSWORD')}@{os.getenv('DB_HOST')}:{os.getenv('DB_PORT')}/{os.getenv('DB_NAME')}"
     )
 }
 
@@ -163,7 +164,7 @@ REST_FRAMEWORK = {
 }
 
 CORS_ALLOWED_ORIGINS = [
-    'https://Assignments.up.railway.app',
+    'https://huzaifa2806.pythonanywhere.com',
 ]
 
 CORS_ALLOW_CREDENTIALS = True
